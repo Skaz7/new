@@ -1,6 +1,8 @@
 import pandas as pd
 import os
-import matplotlib
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import numpy as np
 
 pd.set_option("display.max_rows", 110)  # ustawienie wyświetlania wszystkich 110 wierszy bazy
 
@@ -131,8 +133,43 @@ def filter_by_brightness():
 def filter_by_distance(): 
 
     clear_screen()
+    
+    print("Wyszukiwanie obiektów, których odległość od Ziemi zawiera się w danym przedziale.")
+    print("\nZakres odległości musi być z przedziału 0.3 - 60000.0 lat świetlnych.")
 
-    pass
+    while True:
+        try:
+            search_min = float(input("\nNajmniejsza odległość: "))
+        
+        except ValueError:
+            print("Odległość musi być liczbą. ")
+            continue
+        
+        if search_min < 0.3 or search_min > 60000.0:
+            print("\nZakres odległości musi być z przedziału 0.3 - 60000.0")
+            continue
+
+        try:
+            search_max = float(input("Największa odległość: "))
+
+        except ValueError:
+            print("\nOdległość musi być liczbą. ")
+            continue
+
+        if search_max < search_min:
+            print("\nOdległość maksymalna musi być większa od minimalnej!. ")
+            continue
+        elif search_max > 60000.0:
+            print("\nOdległość może mieć wartość maksymalną 60000.0! ")
+            continue
+
+        for i in range(len(messier)):
+            if messier.loc[i, 'Odległość'] >= search_min and messier.loc[i, 'Odległość'] <= search_max:
+                print(messier.loc[i, : ])
+                print('\n')
+        
+        back_if_0()
+        return
 
 
 ##############################################################################
