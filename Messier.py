@@ -173,12 +173,68 @@ def filter_by_distance():
 
 
 ##############################################################################
+# Sortowanie wg typu obiektu
+def sort_by_object_type():
+    
+    pass
+
+
+##############################################################################
+# Sortowanie wg gwiazdozbioru
+def sort_by_constellation():
+    
+    pass
+
+
+##############################################################################
+# Sortowanie wg jasności
+def sort_by_brightness():
+    
+    pass
+
+
+##############################################################################
+# Sortowanie wg odległości od Ziemi
+def sort_by_distance():
+    
+    pass
+
+
+##############################################################################
 # Wyszukiwanie wg odległości od Ziemi
 def sort_objects(): 
 
     clear_screen()
 
-    pass
+    print("Sortowanie obiektów wg kategorii :")
+    print("\n1 - Według typu obiektu.")
+    print("2 - Według gwiazdozbioru.")
+    print("3 - Według jasności.")
+    print("4 - Według odległości od Ziemi.\n")
+    print("\n0 - Powrót.")
+
+    while True:
+        try:
+            choice = int(input("Twój wybór: "))
+        except ValueError:
+            print("Musisz wybrać opcję z zakresu 1 - 4.")
+            continue
+        
+        if choice == 0:
+            main_screen()
+        if choice == 1:
+            sort_by_object_type()
+        elif choice == 2:
+            sort_by_constellation()
+        elif choice == 3:
+            sort_by_brightness()
+        elif choice == 4:
+            sort_by_distance()
+        else:
+            print("\nBłędna opcja!\n")
+            continue
+        
+        back_if_0()
 
 
 ##############################################################################
@@ -188,9 +244,9 @@ def main_screen():
     while True:
         clear_screen()
         
-        print("\t\t------------------------------------------")
-        print("\t\t| Witaj w bazie danych obiektów Messiera |")
-        print("\t\t------------------------------------------")
+        print("\n\n\n\t\t\t------------------------------------------")
+        print("\t\t\t| Witaj w bazie danych obiektów Messiera |")
+        print("\t\t\t------------------------------------------")
         print("\nWybierz opcję:\n")
         print("1 - Wyświetl dane wszystkich obiektów Messiera.")
         print("2 - Filtruj wg numeru Messiera.")
