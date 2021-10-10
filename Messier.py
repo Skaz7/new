@@ -55,7 +55,7 @@ def filter_by_messier_number():
                 print(messier.loc[i, : ])
                 print('\n') 
 
-    back_if_0()
+        back_if_0()
 
 
 ##############################################################################
@@ -64,34 +64,49 @@ def filter_by_object_type():
 
     clear_screen()
 
-    print("\n\t\t\t----------------------------------")
-    print("\t\t\t| Wyszukiwanie obiektów wg typu. |")
-    print("\t\t\t----------------------------------")
-    print("\t\t\t| Dostępne opcje:                |")
-    print("\t\t\t|                                |")
-    print("\t\t\t| 1  - Pozostałość po supernowej |")
-    print("\t\t\t| 2  - Gromada kulista           |")
-    print("\t\t\t| 3  - Gromada otwarta           |")
-    print("\t\t\t| 4  - Mgławica emisyjna         |")
-    print("\t\t\t| 5  - Gromada gwiazd            |")
-    print("\t\t\t| 6  - Mgławica planetarna       |")
-    print("\t\t\t| 7  - Chmura gwiezdna           |")
-    print("\t\t\t| 8  - Galaktyka spiralna        |")
-    print("\t\t\t| 9  - Galaktyka eliptyczna      |")
-    print("\t\t\t| 10 - Gwiazda podwójna          |")
-    print("\t\t\t| 11 - Grupa gwiazd              |")
-    print("\t\t\t| 12 - Mgławica dyfuzyjna        |")
-    print("\t\t\t| 13 - Galaktyka soczewkowa      |")
-    print("\t\t\t----------------------------------")
-    search = input("\nTwój wybór :  ").capitalize() # Typ obiektu będzie zaczynał się wielką literą
-    
-    for i in range(len(messier)):
-        if messier.loc[i, 'Typ obiektu'] == search:
-            print(messier.loc[i, : ])
-            print('\n')
-    
-    back_if_0()
+    print("\n\t\t\t--------------------------------------------")
+    print("\t\t\t| Wyszukiwanie obiektów wg typu.           |")
+    print("\t\t\t--------------------------------------------")
+    print("\t\t\t| Dostępne opcje:                          |")
+    print("\t\t\t|                                          |")
+    print("\t\t\t| 1  - Chmura gwiezdna                     |")
+    print("\t\t\t| 2  - Galaktyka                           |")
+    print("\t\t\t| 3  - Galaktyka eliptyczna                |")
+    print("\t\t\t| 4  - Galaktyka soczewkowata              |")
+    print("\t\t\t| 5  - Galaktyka spiralna                  |")
+    print("\t\t\t| 6  - Galaktyka spiralna z poprzeczką     |")
+    print("\t\t\t| 7  - Gromada kulista                     |")
+    print("\t\t\t| 8  - Gromada otwarta                     |")
+    print("\t\t\t| 9  - Grupa gwiazd / Mgławica emisyjna    |")
+    print("\t\t\t| 10 - Gwiazda podwójna                    |")
+    print("\t\t\t| 11 - Mała gromada gwiazd                 |")
+    print("\t\t\t| 12 - Mgławica dyfuzyjna                  |")
+    print("\t\t\t| 13 - Mgławica dyfuzyjna / Gromada gwiazd |")
+    print("\t\t\t| 14 - Mgławica emisyjna                   |")
+    print("\t\t\t| 15 - Mgławica emisyjna / Gromada gwiazd  |")
+    print("\t\t\t| 16 - Mgławica planetarna                 |")
+    print("\t\t\t| 17 - Pozostałość po supernowej           |")
+    print("\t\t\t--------------------------------------------")
 
+    while True:
+        try:
+            choice = int(input("\nTwój wybór :  "))
+
+            if choice == 0: 
+                return
+            elif choice < 1 or choice > 17:
+                print("\nWybierz numer z zakresu 1 - 17.\n")
+            else:
+                choosed_object_type = object_type_dict[choice - 1]
+
+                for i in range(len(messier)):
+                    if messier.loc[i, 'Typ obiektu'] == choosed_object_type:
+                        print(messier.loc[i, : ])
+                        print('\n')
+
+        except ValueError:
+            print("\nWybierz numer z zakresu 1 - 17.\n")
+            continue
 
 ##############################################################################
 # Wyszukiwanie wg gwiazdozbiorów
@@ -124,16 +139,28 @@ def filter_by_constellation():
     print("\t\t\t| 18 - Rufa        | 35 - Łabędź               |")
     print("\t\t\t------------------------------------------------")
 
-    search = input("\nTwój wybór :  ").title() # Nazwa będzie rozpoczynać się wielkimi literami
+    while True:
+        try:
+            choice = int(input("\nTwój wybór :  "))
 
-    for i in range(len(messier)):
-        if messier.loc[i, 'Gwiazdozbiór'] == search:
-            print(messier.loc[i, : ])
-            print('\n')
+            if choice == 0: 
+                return
+            elif choice < 1 or choice > 35:
+                print("\nWybierz numer z zakresu 1 - 35.\n")
+            else:
+                choosed_constellation = constellations_dict[choice - 1]
+
+        except ValueError: 
+            print("\nWybierz numer z zakresu 1 - 35.\n")
+            continue
+
+        for i in range(len(messier)):
+            if messier.loc[i, 'Gwiazdozbiór'] == choosed_constellation:
+                print()
+                print(messier.loc[i, : ])
+                print('\n')
+            
     
-    back_if_0()
-
-
 ##############################################################################
 # Wyszukiwanie wg jasności widomej
 def filter_by_brightness():
@@ -265,9 +292,9 @@ def sort_objects():
 
     while True:
         try:
-            choice = int(input("Twój wybór: "))
+            choice = int(input("\nTwój wybór: "))
         except ValueError:
-            print("Musisz wybrać opcję z zakresu 1 - 4.")
+            print("\nMusisz wybrać opcję z zakresu 1 - 4.")
             continue
         
         if choice == 0:
@@ -292,6 +319,7 @@ def sort_objects():
 def main_screen():
 
     while True:
+
         clear_screen()
         
         print("\n\n\n\t\t\t------------------------------------------")
@@ -330,11 +358,12 @@ def main_screen():
             sort_objects()
         else: 
             print("Zły wybór!")
+            continue
 
 
 ##############################################################################
 # Wczytywanie bazy obiektów Messiera z pliku excel
-file = "C:\\Users\sebas\OneDrive\Messier repo\Messier.xlsx"
+file = "C:\\Users\sebas\OneDrive\Messier repo\Messier-Database\Messier.xlsx"
 messier = pd.read_excel(file)
 
 # Ustawienie wielkich liter na początkach nazw.
@@ -344,7 +373,6 @@ for i in range(len(messier)):
         messier.loc[i, 'Gwiazdozbiór'] = messier.loc[i, 'Gwiazdozbiór'].title()        
 
 # Tworzenie słownika gwiazdozbiorów
-
 constellations_set = set()  # Najpierw z kolumny 'Gwiazdozbiór' tworzymy zbiór, bo elementy zbioru nie mogą się powtarzać, więc będzie tylko po jednym wystąpieniu każdego gwiazdozbioru
 for i in range(0, len(messier)): 
     constellations_set.add(messier.loc[i, 'Gwiazdozbiór'])
@@ -356,10 +384,19 @@ i nie da się przekonwertować na słownik wg sekwencji.
 constellations_list = sorted(constellations_set)
 constellations_dict = {}
 
-for i in range(1, len(constellations_list)):
+for i in range(0, len(constellations_list)):
     constellations_dict[i] = constellations_list[i]
 
+# Tworzenie słownika typów obiektów
+object_type_set = set()
+for i in range(0, len(messier)):
+    object_type_set.add(messier.loc[i, 'Typ obiektu'])
 
+object_type_list = sorted(object_type_set)
+object_type_dict = {}
+
+for i in range(0, len(object_type_list)):
+    object_type_dict[i] = object_type_list[i]
 
 ##############################################################################
 # Wywołanie głównego ekranu programu
