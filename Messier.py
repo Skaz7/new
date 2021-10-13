@@ -1,8 +1,5 @@
 import pandas as pd
 import os
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-import numpy as np
 
 pd.set_option("display.max_rows", 110)  # ustawienie wyświetlania wszystkich 110 wierszy bazy
 
@@ -253,28 +250,44 @@ def filter_by_distance():
 # Sortowanie wg typu obiektu
 def sort_by_object_type():
     
-    pass
+    clear_screen()
+
+    print(messier.sort_values(by = ["Typ obiektu"]))
+
+    back_if_0()
 
 
 ##############################################################################
 # Sortowanie wg gwiazdozbioru
 def sort_by_constellation():
     
-    pass
+    clear_screen()
+
+    print(messier.sort_values(by = ["Gwiazdozbiór"]))
+
+    back_if_0()
 
 
 ##############################################################################
 # Sortowanie wg jasności
 def sort_by_brightness():
     
-    pass
+    clear_screen()
+
+    print(messier.sort_values(by = ["Jasność"]))
+
+    back_if_0()
 
 
 ##############################################################################
 # Sortowanie wg odległości od Ziemi
 def sort_by_distance():
     
-    pass
+    clear_screen()
+
+    print(messier.sort_values(by = ["Odległość"]))
+
+    back_if_0()
 
 
 ##############################################################################
