@@ -14,6 +14,7 @@ Wersja v0.10 - działa sprawdzanie czy proces jest aktualnie uruchomiony i zapis
 
 '''
 
+# funkcja sprawdzająca czy dany proces jest uruchomiony
 def process_exists(process_name):
     call = 'TASKLIST', '/FI', 'imagename eq %s' % process_name
     # use buildin check_output right away
@@ -23,28 +24,32 @@ def process_exists(process_name):
     # because Fail message could be translated
     return last_line.lower().startswith(process_name.lower())
 
+
+# funkcja czyszczenia ekranu
 def clear_screen():
     os.system('cls')
 
+# funkcja zapisująca odczytane dane do pliku .json
 def save_data_to_file():
     dict_file = 'data.json'
     with open(dict_file, 'w') as file:
         json.dump(activity_dict, file, indent=4)
 
 clear_screen()
-activity_dict = {}
+activity_dict = {} # stworzenie pustego słownika do zapisania danych w formacie 'czas: działa' lub 'czas: nie działa'
 
+# Główna pętla programu
 while True:
-    now = datetime.datetime.now()
-    if process_exists('chrome.exe') == True:
+
+    now = datetime.datetime.now() # odczyt aktualnej daty i czasu
+
+    if process_exists('chrome.exe') == True: # jeśli proces jest uruchomiony to:
         print(f'Program działa o godzinie: {now: %Y-%m-%d %H:%M}')
-        activity_dict[str(f'{now: %Y-%m-%d %H:%M:%S}')] = 'Działa'
-    else:
+        activity_dict[str(f'{now: %Y-%m-%d %H:%M:%S}')] = 'Działa    '
+
+    else: # jeśli proces nie jest uruchomiony to:
         print(f'Program nie działa o godzinie: {now: %Y-%m-%d %H:%M}')
         activity_dict[str(f'{now: %Y-%m-%d %H:%M:%S}')] = 'Nie działa'
     
-    print('\n', activity_dict)
-    save_data_to_file()
-    time.sleep(3)
-
-
+    save_data_to_file() # zapisz dane do pliku
+    time.sleep(3) # odstęp czasowy w sekundach pomiędzy kolejnymi odczytami
