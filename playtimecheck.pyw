@@ -22,7 +22,7 @@ V0.20 - Dodano opcję ukrywania programu. Zmiana dekodowania procesu na utf-16 z
 def process_exists(process_name):
     call = 'TASKLIST', '/FI', 'imagename eq %s' % process_name
     # use buildin check_output right away
-    output = subprocess.check_output(call).decode('utf-8')
+    output = subprocess.check_output(call).decode('utf-16')
     # check in last line for process name
     last_line = output.strip().split('\r\n')[-1]
     # because Fail message could be translated
@@ -56,11 +56,9 @@ while True:
 
     if process_exists('chrome.exe') == True: # jeśli proces jest uruchomiony to:
         activity_dict[str(f'{now: %Y-%m-%d %H:%M:%S}')] = 'Działa    '
-        print(f'{now: %Y-%m-%d %H:%M:%S}: Działa')
 
     else: # jeśli proces nie jest uruchomiony to:
         activity_dict[str(f'{now: %Y-%m-%d %H:%M:%S}')] = 'Nie działa'
-        print(f'{now: %Y-%m-%d %H:%M:%S}: Nie działa')
     
     save_data_to_file() # zapisz dane do pliku
     time.sleep(10) # odstęp czasowy w sekundach pomiędzy kolejnymi odczytami
