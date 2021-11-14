@@ -55,12 +55,12 @@ while True:
     now = datetime.datetime.now() # odczyt aktualnej daty i czasu
 
     if process_exists('chrome.exe') == True: # jeśli proces jest uruchomiony to:
-        activity_dict[str(f'{now: %Y-%m-%d %H:%M:%S}')] = 'Działa    '
-        print(f'{now: %Y-%m-%d %H:%M:%S}: Działa')
+        activity_dict[str(f'{now:%Y-%m-%d %H:%M:%S}')] = 'Działa    '
+        print(f'{now:%Y-%m-%d %H:%M:%S}: Działa')
 
     else: # jeśli proces nie jest uruchomiony to:
-        activity_dict[str(f'{now: %Y-%m-%d %H:%M:%S}')] = 'Nie działa'
-        print(f'{now: %Y-%m-%d %H:%M:%S}: Nie działa')
+        activity_dict[str(f'{now:%Y-%m-%d %H:%M:%S}')] = 'Nie działa'
+        print(f'{now:%Y-%m-%d %H:%M:%S}: Nie działa')
     
     save_data_to_file() # zapisz dane do pliku
     time.sleep(10) # odstęp czasowy w sekundach pomiędzy kolejnymi odczytami

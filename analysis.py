@@ -1,5 +1,5 @@
 import json
-import datetime
+from datetime import datetime, timedelta
 import time
 import os
 import matplotlib.pyplot as plt
@@ -47,9 +47,24 @@ read_data_from_file()
 print('-------------------------------------\n')
 
 
+# data_dict = {k: True if data_dict[k] == 'Działa    ' else False for k in data_dict}
+# print(data_dict)
 # plot_data()
 
-data_dict = {k: True if data_dict[k] == 'Działa    ' else False for k in data_dict}
-print(data_dict)
 
-plot_data()
+data_list = list(data_dict.items())
+new_data_list = []
+
+for k, v in data_list:
+    entry = [datetime.strptime(k, '%Y-%m-%d %H:%M:%S'), v]
+    new_data_list.append(entry)
+
+for i in range(len(new_data_list)):
+    print(new_data_list[i][0], ' - ', new_data_list[i][1])
+
+first = (new_data_list[0][0]) # czas rozpoczęcia sprawdzania
+second = (new_data_list[-1][0]) # czas zakończenia sprawdzania
+
+diff = second - first # Całkowity czas działania programu sprawdzającego
+
+print(f'\nCzas działania programu sprawdzającego (H:M:S): {diff}\n')
