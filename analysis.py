@@ -17,7 +17,7 @@ v0.20 - druga wersja:
 
 '''
 
-data_dict = []
+data_dict = {}
 
 # funkcja czyszcząca ekran
 def clear_screen():
@@ -26,16 +26,22 @@ def clear_screen():
 
 def read_data_from_file():
 
-    file_name = 'data.json'
+    file_name = 'd:\\users\\sebas\\onedrive\\repositories\\playtimecheck\\data.json'
 
+    # wczytanie danych z pliku .json do słownika
     with open(file_name, 'r') as file:
         global data_dict
         data_dict = json.load(file)
 
-    for date, state in data_dict.items():
-        print('| ' + date + ' : ' + state + ' |')
+    # drukowanie kluczy i wartości stworzonego słownika
+    # for program, state in data_dict.items():
+    #     print(f'\n\n{program}')
+    #     print('------------------')
+    #     for key, value in state.items():
+    #         print(key, ' - ', value)
 
 
+# funcja drukująca wykres
 def plot_data():
     plt.bar(*zip(*data_dict.items()))
     plt.show()
@@ -43,36 +49,49 @@ def plot_data():
 
 clear_screen()
 
-print('\n   Wydruk stanu procesu w czasie:\n')
-print('_____________________________________')
-print('|     Data   | Godzina |    Stan    |')
-print('-------------------------------------')
-
 read_data_from_file()
-print('-------------------------------------\n')
+
+
+
 
 
 data_list = list(data_dict.items())
+
 new_data_list = []
 
-for k, v in data_list:
-    entry = [datetime.strptime(k, '%Y-%m-%d %H:%M:%S'), v]
-    new_data_list.append(entry)
+for i in range(len(data_list)):
+    print()
+    print(data_list[i][0])
+    print('---------------------')
 
-for i in range(len(new_data_list)):
-    print(new_data_list[i][0], ' - ', new_data_list[i][1])
+    for key, value in data_list[i][1].items():
+        print(key, value)
+    print()
 
-first = (new_data_list[0][0]) # czas rozpoczęcia sprawdzania
-second = (new_data_list[-1][0]) # czas zakończenia sprawdzania
 
-diff = second - first # Całkowity czas działania programu sprawdzającego
+# for k, v in data_dict.values():
+#     print(k, v)
+    # entry = [datetime.strptime(k, '%Y-%m-%d %H:%M:%S'), v]
+    # new_data_list.append(entry)
 
-print(f'\nCzas działania programu sprawdzającego (H:M:S): {diff}\n')
 
-plt.xlabel('Godziny')
-plt.ylabel('Stan sprawdzanego programu')
-plt.title(f'Stan sprawdzanego programu w czasie {new_data_list[0][0]}  -  {new_data_list[-1][0]}')
 
-for i in range(len(new_data_list)):
-    plt.plot(new_data_list[i][0], new_data_list[i][1], 'go')
-plt.show()
+
+
+# for i in range(len(new_data_list)):
+#     print(new_data_list[i][0], ' - ', new_data_list[i][1])
+
+# first = (new_data_list[0][0]) # czas rozpoczęcia sprawdzania
+# second = (new_data_list[-1][0]) # czas zakończenia sprawdzania
+
+# diff = second - first # Całkowity czas działania programu sprawdzającego
+
+# print(f'\nCzas działania programu sprawdzającego (H:M:S): {diff}\n')
+
+# plt.xlabel('Godziny')
+# plt.ylabel('Stan sprawdzanego programu')
+# plt.title(f'Stan sprawdzanego programu w czasie {new_data_list[0][0]}  -  {new_data_list[-1][0]}')
+
+# for i in range(len(new_data_list)):
+#     plt.plot(new_data_list[i][0], new_data_list[i][1], 'go')
+# plt.show()
