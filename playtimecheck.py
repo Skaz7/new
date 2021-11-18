@@ -13,6 +13,9 @@ v0.20 - Dodano opcję ukrywania programu. Zmiana dekodowania procesu na utf-16 z
         Dodano plik z rozszerzeniem .pyw - ukrywa konsolę w trakcie wykonywania programu
 v0.30 - Dodano sprawdzanie kilku kolejnych programów jednocześnie (chrome, notepad, ToDo) 
         i zapisanie wspólnego słownika do pliku .json
+v0.40 - zmieniony sposób zapisu danych do pliku .json, zamiast słowników ze stanami uruchomienia programów zagnieżdżonych
+        w słownikach z nazwami programów, teraz są listy ze stanami uruchomienia programów zagnieżdżone w słownikach 
+        nazw programów. Pozwoliło to na zmianę formatu zapisu daty ze string na datetime.
 
 #ToDo:
 - 
@@ -37,7 +40,7 @@ def clear_screen():
 
 # funkcja zapisująca odczytane dane do pliku .json
 def save_data_to_file():
-    dict_file = 'data.json'
+    dict_file = 'd:\\users\\sebas\\onedrive\\repositories\\playtimecheck\data.json'
     with open(dict_file, 'w') as file:
         json.dump(data_dict, file, indent=4)
         # json.dump(notepad_activity, file, indent=4)
@@ -45,9 +48,9 @@ def save_data_to_file():
 
 clear_screen()
 
-chrome_activity = {} # stworzenie pustego słownika do zapisania danych w formacie 'czas: działa' lub 'czas: nie działa'
-notepad_activity = {}
-ToDo_activity = {}
+chrome_activity = [] # stworzenie pustego słownika do zapisania danych w formacie 'czas: działa' lub 'czas: nie działa'
+notepad_activity = []
+ToDo_activity = []
 
 # funkcja ukrywająca aplikację - działanie w tle
 def hide_app():
@@ -61,27 +64,27 @@ while True:
     now = datetime.datetime.now() # odczyt aktualnej daty i czasu
 
     if process_exists('chrome.exe') == True: # jeśli proces jest uruchomiony to:
-        chrome_activity[str(f'{now:%Y-%m-%d %H:%M:%S}')] = 'Chrome działa    '
+        chrome_activity.append([now:%Y-%m-%d %H:%M:%S, 'Chrome działa    '])
         print(f'{now:%Y-%m-%d %H:%M:%S}: Chrome działa')
 
     if process_exists('chrome.exe') == False: # jeśli proces nie jest uruchomiony to:
-        chrome_activity[str(f'{now:%Y-%m-%d %H:%M:%S}')] = 'Chrome nie działa'
+        chrome_activity.append([now:%Y-%m-%d %H:%M:%S, 'Chrome nie działa'])
         print(f'{now:%Y-%m-%d %H:%M:%S}: Chrome nie działa')
 
     if process_exists('notepad.exe') == True:
-        notepad_activity[str(f'{now:%Y-%m-%d %H:%M:%S}')] = 'Notepad działa'
+        notepad_activity.append([now:%Y-%m-%d %H:%M:%S, 'Notepad działa    '])
         print(f'{now:%Y-%m-%d %H:%M:%S}: Notepad działa')
 
     if process_exists('notepad.exe') == False:
-        notepad_activity[str(f'{now:%Y-%m-%d %H:%M:%S}')] = 'Notepad nie działa'
+        notepad_activity.append([now:%Y-%m-%d %H:%M:%S, 'Notepad nie działa'])
         print(f'{now:%Y-%m-%d %H:%M:%S}: Notepad nie działa')
     
     if process_exists('ToDo.exe') == True:
-        ToDo_activity[str(f'{now:%Y-%m-%d %H:%M:%S}')] = 'ToDo działa'
+        ToDo_activity.append([f'{now:%Y-%m-%d %H:%M:%S}', 'ToDo działa    '])
         print(f'{now:%Y-%m-%d %H:%M:%S}: ToDo działa')
 
     if process_exists('ToDo.exe') == False:
-        ToDo_activity[str(f'{now:%Y-%m-%d %H:%M:%S}')] = 'ToDo nie działa'
+        ToDo_activity.append([f'{now:%Y-%m-%d %H:%M:%S}', 'ToDo nie działa'])
         print(f'{now:%Y-%m-%d %H:%M:%S}: Todo nie działa')
     
     data_dict = {'Chrome': chrome_activity, 'Notepad': notepad_activity, 'ToDo': ToDo_activity}

@@ -1,6 +1,6 @@
 import json
-from datetime import datetime, timedelta
-import time
+from datetime import datetime
+# import time
 import os
 import matplotlib.pyplot as plt
 
@@ -10,35 +10,91 @@ Dane będą dostępne w formie tabel i wykresów.
 
 v0.10 - piersza wersja
 v0.20 - druga wersja:
-    - odczytywanie danych z zapisanego pliku -json
-    - konwersja danych z dict do list
-    - konwersja formatu daty ze string do datetime
-    - wydruk wykresu prezentującego stan programu w sprawdzanym okresie
+        - odczytywanie danych z zapisanego pliku -json
+        - konwersja danych z dict do list
+        - konwersja formatu daty ze string do datetime
+        - wydruk wykresu prezentującego stan programu w sprawdzanym okresie
+v0.30 - trzecia wersja:
+        - odczyytywanie nowego pliku .json (sprawdzane kilka programów jednocześnie)
+        - formatowanie pliku i drukowanie na ekranie wyniku
+v0.40 - czwarta wersja
+        - gruntowna przebudowa pliku. Dane w formacie .json zawierają słowniki list zamiast słowników słowników jak wcześniej.
+          Odczytana z pliku data jest od raz w formacie datetime a nie jak wcześniej string. W związku z tym nie ma konwersji.
+          Pozwala to na wykonywanie operacji związanych z datami.
 
+
+#TODO
+      - drukowanie wykresów
 '''
 
 data_dict = {}
+
 
 # funkcja czyszcząca ekran
 def clear_screen():
     os.system('cls')
 
 
+# Funcja wczytująca dane z pliku
 def read_data_from_file():
-
+    '''
+    Wczytuje plik json w formacie jak poniżej:
+    {
+        "Chrome": {
+            "2021-11-15 19:29:20": "Chrome działa    "
+        },
+        "Notepad": {
+            "2021-11-15 19:29:20": "Notepad nie działa"
+        },
+        "ToDo": {
+            "2021-11-15 19:29:20": "ToDo nie działa"
+        }
+    }
+    '''
     file_name = 'd:\\users\\sebas\\onedrive\\repositories\\playtimecheck\\data.json'
-
-    # wczytanie danych z pliku .json do słownika
     with open(file_name, 'r') as file:
         global data_dict
         data_dict = json.load(file)
 
-    # drukowanie kluczy i wartości stworzonego słownika
-    # for program, state in data_dict.items():
-    #     print(f'\n\n{program}')
-    #     print('------------------')
-    #     for key, value in state.items():
-    #         print(key, ' - ', value)
+
+# funcja drukująca listę słowników
+def print_data():
+
+    '''
+    Drukowanie słownika list w formacie jak poniżej:
+
+    Chrome
+    ---------------------
+    2021-11-15 19:29:20 Chrome działa    
+    2021-11-15 19:29:22 Chrome działa    
+    2021-11-15 19:29:24 Chrome działa    
+    ...
+    ...
+
+    Najpierw w głównej pętli drukowany jest pierwszy element z listy, czyli nazwa programu wraz z podkreśleniem.
+    Wewnętrzna pętla drukuje elementy zagnieżdżone, czyli listy z godzinami i stanami uruchomienia danego programu.
+    '''
+
+    for program, state in data_dict.items():
+        print('\n\n', program, sep = '')
+        print('----------------')
+
+        for i in range(len(state)):
+            state[i][0] = datetime.strptime(state[i][0], '%Y-%m-%d %H:%M:%S')
+            print(state[i][0], ': ', state[i][1])
+
+
+# funcja drukująca czas rozpoczęcia, zakończenia i trwania pomiaru
+def check_time():
+
+    first = data_dict['Chrome'][0][0]
+    last = data_dict['Chrome'][-1][0]
+
+    print()
+    print(f'Pomiar rozpoczęto:_________{first}')
+    print(f'Pomiar zakończono:_________{last}')
+    print(f'Całkowity czas pomiaru: ___{last - first}')
+    print()
 
 
 # funcja drukująca wykres
@@ -47,51 +103,17 @@ def plot_data():
     plt.show()
 
 
-clear_screen()
-
-read_data_from_file()
 
 
 
 
+########################################################################################################################
+# GŁÓWNY PROGRAM:
 
-data_list = list(data_dict.items())
+clear_screen()                                                              # wyczyść ekran
 
-new_data_list = []
+read_data_from_file()                                                       # wczytaj plij json z danymi
 
-for i in range(len(data_list)):
-    print()
-    print(data_list[i][0])
-    print('---------------------')
+print_data()
 
-    for key, value in data_list[i][1].items():
-        print(key, value)
-    print()
-
-
-# for k, v in data_dict.values():
-#     print(k, v)
-    # entry = [datetime.strptime(k, '%Y-%m-%d %H:%M:%S'), v]
-    # new_data_list.append(entry)
-
-
-
-
-
-# for i in range(len(new_data_list)):
-#     print(new_data_list[i][0], ' - ', new_data_list[i][1])
-
-# first = (new_data_list[0][0]) # czas rozpoczęcia sprawdzania
-# second = (new_data_list[-1][0]) # czas zakończenia sprawdzania
-
-# diff = second - first # Całkowity czas działania programu sprawdzającego
-
-# print(f'\nCzas działania programu sprawdzającego (H:M:S): {diff}\n')
-
-# plt.xlabel('Godziny')
-# plt.ylabel('Stan sprawdzanego programu')
-# plt.title(f'Stan sprawdzanego programu w czasie {new_data_list[0][0]}  -  {new_data_list[-1][0]}')
-
-# for i in range(len(new_data_list)):
-#     plt.plot(new_data_list[i][0], new_data_list[i][1], 'go')
-# plt.show()
+check_time()
