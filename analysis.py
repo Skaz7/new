@@ -90,20 +90,19 @@ def check_time():
     first = data_dict['Chrome'][0][0]
     last = data_dict['Chrome'][-1][0]
 
-    print()
-    print(f'Pomiar rozpoczęto:_________{first}')
-    print(f'Pomiar zakończono:_________{last}')
-    print(f'Całkowity czas pomiaru: ___{last - first}')
+    print(f'\n\nPomiar rozpoczęto:_________{first}')
+    print(f'\nPomiar zakończono:_________{last}')
+    print(f'\nCałkowity czas pomiaru: ___{last - first}')
     print()
 
 
 # funcja drukująca wykres
 def plot_data():
-    plt.bar(*zip(*data_dict.items()))
+
+    plt.plot(data_dict['Chrome'][0])
+    plt.xlabel("Date / Time")
+    plt.ylabel("State")
     plt.show()
-
-
-
 
 
 
@@ -117,3 +116,5 @@ read_data_from_file()                                                       # wc
 print_data()
 
 check_time()
+
+plot_data()
