@@ -3,6 +3,7 @@ from datetime import datetime
 # import time
 import os
 import matplotlib.pyplot as plt
+import pandas as pd
 
 '''
 Moduł do analizy danych przesłanych w pliku .json.
@@ -25,6 +26,7 @@ v0.40 - czwarta wersja
 
 #TODO
       - drukowanie wykresów
+      - #! PRAWDOPODOBNIE DO DRUKOWANIA TRZEBA PRZEKONWERTOWAĆ STRING Z FORMATU 'DZIAŁA / NIE DZIAŁA ' NA BOOLEAN (TRUE / FALSE)
 '''
 
 data_dict = {}
@@ -99,10 +101,34 @@ def check_time():
 # funcja drukująca wykres
 def plot_data():
 
-    plt.plot(data_dict['Chrome'][0])
-    plt.xlabel("Date / Time")
-    plt.ylabel("State")
+    check_time = list(data_dict.values()[0])
+    program_state = list(data_dict.values()[1])
+    plt.bar(x = check_time, y = program_state)
     plt.show()
+
+
+# funkcja konwertująca opis stanu programu do formatu boolean (true/false)
+def convert_to_boolean():
+    for key in data_dict.keys():
+        for i in range(len(data_dict[key])):
+            if data_dict[key][i][1] == 'Chrome działa    ':
+                data_dict[key][i][1] = True
+            elif data_dict[key][i][1] == 'Chrome nie działa':
+                data_dict[key][i][1] = False
+            if data_dict[key][i][1] == 'Notepad działa    ':
+                data_dict[key][i][1] = True
+            elif data_dict[key][i][1] == 'Notepad nie działa':
+                data_dict[key][i][1] = False
+            if data_dict[key][i][1] == 'ToDo działa    ':
+                data_dict[key][i][1] = True
+            elif data_dict[key][i][1] == 'ToDo nie działa':
+                data_dict[key][i][1] = False
+
+    for key in data_dict.keys():
+        print(key)
+        for i, j in data_dict[key]:
+            print(i, j)
+
 
 
 
@@ -115,6 +141,11 @@ read_data_from_file()                                                       # wc
 
 print_data()
 
+print()
+
 check_time()
 
-plot_data()
+print()
+
+convert_to_boolean()
+   
