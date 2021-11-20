@@ -92,19 +92,14 @@ def check_time():
     first = data_dict['Chrome'][0][0]
     last = data_dict['Chrome'][-1][0]
 
-    print(f'\n\nPomiar rozpoczęto:_________{first}')
-    print(f'\nPomiar zakończono:_________{last}')
-    print(f'\nCałkowity czas pomiaru: ___{last - first}')
+    print('\n--------------------------------------------------')
+    print(f'| Pomiar rozpoczęto:_________{first} |')
+    print('|                                                |')
+    print(f'| Pomiar zakończono:_________{last} |')
+    print('|                                                |')
+    print(f'| Całkowity czas pomiaru: ___{last - first}             |')
+    print('--------------------------------------------------')
     print()
-
-
-# funcja drukująca wykres
-def plot_data():
-
-    check_time = list(data_dict.values()[0])
-    program_state = list(data_dict.values()[1])
-    plt.bar(x = check_time, y = program_state)
-    plt.show()
 
 
 # funkcja konwertująca opis stanu programu do formatu boolean (true/false)
@@ -130,6 +125,35 @@ def convert_to_boolean():
             print(i, j)
 
 
+# funcja drukująca wykres
+def plot_data():
+
+    for i in range(len(chrome_list)):
+        x_data = chrome_list[i][0]
+        y_data = chrome_list[i][1]
+        plt.plot(x_data, y_data, 'rx', markersize = 12, label = 'Chrome')
+
+
+    for i in range(len(notepad_list)):
+        x_data = notepad_list[i][0]
+        y_data = notepad_list[i][1]
+        plt.plot(x_data, y_data, 'b_', markersize = 12, label = 'Notepad')
+
+    for i in range(len(todo_list)):
+        x_data = todo_list[i][0]
+        y_data = todo_list[i][1]
+        plt.plot(x_data, y_data, 'g|', markersize = 12, label = 'ToDo')
+
+        plt.xlabel('Data / godzina')
+        plt.ylabel('Stan programu')
+        plt.title('Wykres użycia programów CHROME, NOTEPAD i ToDo')
+        plt.ylim(-0.1, 1.1)
+
+    plt.legend(['Chrome', 'Notepad', 'ToDo'], loc = 'best')
+    plt.show()
+
+
+
 
 
 ########################################################################################################################
@@ -147,5 +171,14 @@ check_time()
 
 print()
 
-convert_to_boolean()
-   
+chrome_list = data_dict['Chrome']
+notepad_list = data_dict['Notepad']
+todo_list = data_dict['ToDo']
+
+# print(chrome_list)
+print()
+# print(notepad_list)
+print()
+# print(todo_list)
+print()
+plot_data()

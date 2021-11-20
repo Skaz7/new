@@ -48,7 +48,7 @@ def save_data_to_file():
 
 clear_screen()
 
-chrome_activity = [] # stworzenie pustego słownika do zapisania danych w formacie 'czas: działa' lub 'czas: nie działa'
+chrome_activity = [] # stworzenie pustj listy do zapisania danych w formacie ['czas', True] lub ['czas', False]
 notepad_activity = []
 ToDo_activity = []
 
@@ -64,30 +64,30 @@ while True:
     now = datetime.datetime.now() # odczyt aktualnej daty i czasu
 
     if process_exists('chrome.exe') == True: # jeśli proces jest uruchomiony to:
-        chrome_activity.append([now:%Y-%m-%d %H:%M:%S, 'Chrome działa    '])
+        chrome_activity.append([f'{now:%Y-%m-%d %H:%M:%S}', True])
         print(f'{now:%Y-%m-%d %H:%M:%S}: Chrome działa')
 
     if process_exists('chrome.exe') == False: # jeśli proces nie jest uruchomiony to:
-        chrome_activity.append([now:%Y-%m-%d %H:%M:%S, 'Chrome nie działa'])
+        chrome_activity.append([f'{now:%Y-%m-%d %H:%M:%S}', False])
         print(f'{now:%Y-%m-%d %H:%M:%S}: Chrome nie działa')
 
     if process_exists('notepad.exe') == True:
-        notepad_activity.append([now:%Y-%m-%d %H:%M:%S, 'Notepad działa    '])
+        notepad_activity.append([f'{now:%Y-%m-%d %H:%M:%S}', True])
         print(f'{now:%Y-%m-%d %H:%M:%S}: Notepad działa')
 
     if process_exists('notepad.exe') == False:
-        notepad_activity.append([now:%Y-%m-%d %H:%M:%S, 'Notepad nie działa'])
+        notepad_activity.append([f'{now:%Y-%m-%d %H:%M:%S}', False])
         print(f'{now:%Y-%m-%d %H:%M:%S}: Notepad nie działa')
     
     if process_exists('ToDo.exe') == True:
-        ToDo_activity.append([f'{now:%Y-%m-%d %H:%M:%S}', 'ToDo działa    '])
+        ToDo_activity.append([f'{now:%Y-%m-%d %H:%M:%S}', True])
         print(f'{now:%Y-%m-%d %H:%M:%S}: ToDo działa')
 
     if process_exists('ToDo.exe') == False:
-        ToDo_activity.append([f'{now:%Y-%m-%d %H:%M:%S}', 'ToDo nie działa'])
+        ToDo_activity.append([f'{now:%Y-%m-%d %H:%M:%S}', False])
         print(f'{now:%Y-%m-%d %H:%M:%S}: Todo nie działa')
     
     data_dict = {'Chrome': chrome_activity, 'Notepad': notepad_activity, 'ToDo': ToDo_activity}
 
     save_data_to_file() # zapisz dane do pliku
-    time.sleep(1) # odstęp czasowy w sekundach pomiędzy kolejnymi odczytami
+    time.sleep(30) # odstęp czasowy w sekundach pomiędzy kolejnymi odczytami

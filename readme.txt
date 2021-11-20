@@ -6,7 +6,7 @@ v0.30 - Dodano sprawdzanie kilku kolejnych programów jednocześnie (chrome, not
         i zapisanie wspólnego słownika do pliku .json
 v0.40 - zmieniony sposób zapisu danych do pliku .json, zamiast słowników ze stanami uruchomienia programów zagnieżdżonych
         w słownikach z nazwami programów, teraz są listy ze stanami uruchomienia programów zagnieżdżone w słownikach 
-        nazw programów. Pozwoliło to na zmianę formatu zapisu daty ze string na datetime.
+        nazw programów. Pozwoli to na zmianę formatu zapisu daty ze string na datetime w pliku analysis.
 #ToDo:
       - przesłanie pliku ze słownikiem na adres mailowy.
 
@@ -25,7 +25,6 @@ v0.30 - trzecia wersja:
         - formatowanie pliku i drukowanie na ekranie wyniku
 v0.40 - czwarta wersja
         - gruntowna przebudowa pliku. Dane w formacie .json zawierają słowniki list zamiast słowników słowników jak wcześniej.
-          Odczytana z pliku data jest od raz w formacie datetime a nie jak wcześniej string. W związku z tym nie ma konwersji.
-          Pozwala to na wykonywanie operacji związanych z datami.
+          Odczytana z pliku data jest w formacie string, wymaga konwersji do datetime w celu wykonywania operacji związanych z datami.
 #TODO
       - drukowanie wykresów
