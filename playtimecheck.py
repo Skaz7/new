@@ -3,25 +3,11 @@ import datetime
 import time
 import os
 import json
-from typing import List
+# from typing import List
 import win32gui # BIBLIOTEKA DO UKRYWANIA APLIKACJI
 import win32.lib.win32con as win32con # BIBLIOTEKA DO UKRYWANIA APLIKACJI
 
-'''
-v0.10 - działa sprawdzanie czy proces jest aktualnie uruchomiony i zapisywanie do słownika w postaci 'Godzina: uruchomiony'.
-v0.20 - Dodano opcję ukrywania programu. Zmiana dekodowania procesu na utf-16 z powodu zwracanego wcześniej błędu dekodowania.
-        Dodano plik z rozszerzeniem .pyw - ukrywa konsolę w trakcie wykonywania programu
-v0.30 - Dodano sprawdzanie kilku kolejnych programów jednocześnie (chrome, notepad, ToDo) 
-        i zapisanie wspólnego słownika do pliku .json
-v0.40 - zmieniony sposób zapisu danych do pliku .json, zamiast słowników ze stanami uruchomienia programów zagnieżdżonych
-        w słownikach z nazwami programów, teraz są listy ze stanami uruchomienia programów zagnieżdżone w słownikach 
-        nazw programów. Pozwoliło to na zmianę formatu zapisu daty ze string na datetime.
 
-#ToDo:
-- 
-- przesłanie pliku ze słownikiem na adres mailowy.
-
-'''
 
 # funkcja sprawdzająca czy dany proces jest uruchomiony
 def process_exists(process_name):
@@ -90,4 +76,4 @@ while True:
     data_dict = {'Chrome': chrome_activity, 'Notepad': notepad_activity, 'ToDo': ToDo_activity}
 
     save_data_to_file() # zapisz dane do pliku
-    time.sleep(30) # odstęp czasowy w sekundach pomiędzy kolejnymi odczytami
+    time.sleep(120) # odstęp czasowy w sekundach pomiędzy kolejnymi odczytami

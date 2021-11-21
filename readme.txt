@@ -7,7 +7,12 @@ v0.30 - Dodano sprawdzanie kilku kolejnych programów jednocześnie (chrome, not
 v0.40 - zmieniony sposób zapisu danych do pliku .json, zamiast słowników ze stanami uruchomienia programów zagnieżdżonych
         w słownikach z nazwami programów, teraz są listy ze stanami uruchomienia programów zagnieżdżone w słownikach 
         nazw programów. Pozwoli to na zmianę formatu zapisu daty ze string na datetime w pliku analysis.
+v0.50 - Zmieniony format stanu programu w liście ze string na boolean ['Chrome', 'Działa'] na ['Chrome', True]
+
 #ToDo:
+      - zmiana kodowania w linii:
+                16. output = subprocess.check_output(call).decode('utf-8')
+        ponieważ program uruchomiony w pythonie działa prawidłowo, a uruchomiony bezpośrednio plik .py zwraca błąd kodowania
       - przesłanie pliku ze słownikiem na adres mailowy.
 
 
@@ -26,5 +31,8 @@ v0.30 - trzecia wersja:
 v0.40 - czwarta wersja
         - gruntowna przebudowa pliku. Dane w formacie .json zawierają słowniki list zamiast słowników słowników jak wcześniej.
           Odczytana z pliku data jest w formacie string, wymaga konwersji do datetime w celu wykonywania operacji związanych z datami.
-#TODO
-      - drukowanie wykresów
+v0.50 - piąta wersja
+        - wprowadzone menu główne programu z opcjami do wyboru
+        - usunięta funkcja zmian formatu string na boolean w liście stanów programów
+        - osobna funkcja do kowersji string do datetime
+        - drukowanie stanu użycia trzech programów na jednym wykresie

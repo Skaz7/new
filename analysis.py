@@ -1,35 +1,18 @@
 import json
 from datetime import datetime
-# import time
+import time
 import os
 import matplotlib.pyplot as plt
-import pandas as pd
-
-'''
-Moduł do analizy danych przesłanych w pliku .json.
-Dane będą dostępne w formie tabel i wykresów.
-
-v0.10 - piersza wersja
-v0.20 - druga wersja:
-        - odczytywanie danych z zapisanego pliku -json
-        - konwersja danych z dict do list
-        - konwersja formatu daty ze string do datetime
-        - wydruk wykresu prezentującego stan programu w sprawdzanym okresie
-v0.30 - trzecia wersja:
-        - odczyytywanie nowego pliku .json (sprawdzane kilka programów jednocześnie)
-        - formatowanie pliku i drukowanie na ekranie wyniku
-v0.40 - czwarta wersja
-        - gruntowna przebudowa pliku. Dane w formacie .json zawierają słowniki list zamiast słowników słowników jak wcześniej.
-          Odczytana z pliku data jest od raz w formacie datetime a nie jak wcześniej string. W związku z tym nie ma konwersji.
-          Pozwala to na wykonywanie operacji związanych z datami.
+# import pandas as pd
 
 
-#TODO
-      - drukowanie wykresów
-      - #! PRAWDOPODOBNIE DO DRUKOWANIA TRZEBA PRZEKONWERTOWAĆ STRING Z FORMATU 'DZIAŁA / NIE DZIAŁA ' NA BOOLEAN (TRUE / FALSE)
-'''
+# Funcja wczytująca dane z pliku
+def read_data_from_file():
 
-data_dict = {}
+    file_name = 'd:\\users\\sebas\\onedrive\\repositories\\playtimecheck\\data.json'
+    with open(file_name, 'r') as file:
+        global data_dict
+        data_dict = json.load(file)
 
 
 # funkcja czyszcząca ekran
@@ -37,53 +20,12 @@ def clear_screen():
     os.system('cls')
 
 
-# Funcja wczytująca dane z pliku
-def read_data_from_file():
-    '''
-    Wczytuje plik json w formacie jak poniżej:
-    {
-        "Chrome": {
-            "2021-11-15 19:29:20": "Chrome działa    "
-        },
-        "Notepad": {
-            "2021-11-15 19:29:20": "Notepad nie działa"
-        },
-        "ToDo": {
-            "2021-11-15 19:29:20": "ToDo nie działa"
-        }
-    }
-    '''
-    file_name = 'd:\\users\\sebas\\onedrive\\repositories\\playtimecheck\\data.json'
-    with open(file_name, 'r') as file:
-        global data_dict
-        data_dict = json.load(file)
-
-
-# funcja drukująca listę słowników
-def print_data():
-
-    '''
-    Drukowanie słownika list w formacie jak poniżej:
-
-    Chrome
-    ---------------------
-    2021-11-15 19:29:20 Chrome działa    
-    2021-11-15 19:29:22 Chrome działa    
-    2021-11-15 19:29:24 Chrome działa    
-    ...
-    ...
-
-    Najpierw w głównej pętli drukowany jest pierwszy element z listy, czyli nazwa programu wraz z podkreśleniem.
-    Wewnętrzna pętla drukuje elementy zagnieżdżone, czyli listy z godzinami i stanami uruchomienia danego programu.
-    '''
+# Funcja konwertująca forma string do datetime
+def convert_string_to_datetime():
 
     for program, state in data_dict.items():
-        print('\n\n', program, sep = '')
-        print('----------------')
-
         for i in range(len(state)):
             state[i][0] = datetime.strptime(state[i][0], '%Y-%m-%d %H:%M:%S')
-            print(state[i][0], ': ', state[i][1])
 
 
 # funcja drukująca czas rozpoczęcia, zakończenia i trwania pomiaru
@@ -91,38 +33,35 @@ def check_time():
 
     first = data_dict['Chrome'][0][0]
     last = data_dict['Chrome'][-1][0]
+    measure_count = len(data_dict['Chrome'])
 
     print('\n--------------------------------------------------')
-    print(f'| Pomiar rozpoczęto:_________{first} |')
+    print(f'| Pomiar rozpoczęto:         {first} |')
     print('|                                                |')
-    print(f'| Pomiar zakończono:_________{last} |')
+    print(f'| Pomiar zakończono:         {last} |')
     print('|                                                |')
-    print(f'| Całkowity czas pomiaru: ___{last - first}             |')
+    print(f'| Całkowity czas pomiaru:    {last - first}             |')
+    print('|                                                |')
+    print(f'| Ilość wykonanych pomiarów: {measure_count}                 |')
     print('--------------------------------------------------')
     print()
 
+    input('Enter - powrót do głównego menu.')
+    main_menu()
 
-# funkcja konwertująca opis stanu programu do formatu boolean (true/false)
-def convert_to_boolean():
-    for key in data_dict.keys():
-        for i in range(len(data_dict[key])):
-            if data_dict[key][i][1] == 'Chrome działa    ':
-                data_dict[key][i][1] = True
-            elif data_dict[key][i][1] == 'Chrome nie działa':
-                data_dict[key][i][1] = False
-            if data_dict[key][i][1] == 'Notepad działa    ':
-                data_dict[key][i][1] = True
-            elif data_dict[key][i][1] == 'Notepad nie działa':
-                data_dict[key][i][1] = False
-            if data_dict[key][i][1] == 'ToDo działa    ':
-                data_dict[key][i][1] = True
-            elif data_dict[key][i][1] == 'ToDo nie działa':
-                data_dict[key][i][1] = False
+
+# funkcja drukująca zestawienie wszystkich programów i ich stanów w czasie
+def print_all_data():
+
+    clear_screen()
 
     for key in data_dict.keys():
         print(key)
         for i, j in data_dict[key]:
             print(i, j)
+
+    input('Enter - powrót do głównego menu.')
+    main_menu()
 
 
 # funcja drukująca wykres
@@ -132,7 +71,6 @@ def plot_data():
         x_data = chrome_list[i][0]
         y_data = chrome_list[i][1]
         plt.plot(x_data, y_data, 'rx', markersize = 12, label = 'Chrome')
-
 
     for i in range(len(notepad_list)):
         x_data = notepad_list[i][0]
@@ -147,10 +85,52 @@ def plot_data():
         plt.xlabel('Data / godzina')
         plt.ylabel('Stan programu')
         plt.title('Wykres użycia programów CHROME, NOTEPAD i ToDo')
-        plt.ylim(-0.1, 1.1)
+        plt.ylim(-0.3, 1.3)
 
-    plt.legend(['Chrome', 'Notepad', 'ToDo'], loc = 'best')
     plt.show()
+
+
+# Menu główne programu
+def main_menu():
+
+    while True:
+        clear_screen()
+        print('\n\n\n\t\t\tAnaliza danych użycia programów.')
+        print('\n\t\t\tWybierz jedną z poniższych opcji:')
+        print('\n\t\t\t\t1 - Analiza działania pojedynczego programu')
+        print('\t\t\t\t2 - Tabela z danymi użycia wszystkich programów.')
+        print('\t\t\t\t3 - Wykres użycia wszystkich programów.')
+        print('\t\t\t\t4 - Wydruk czasu pomiaru.')
+        print('\n\t\t\t\t0 - Wyjście z programu.')
+
+        try:
+            choice = int(input('\n\t\t\tTwój wybór: '))
+
+            if choice == 0:
+                clear_screen()
+                quit()
+            elif choice == 1:
+                pass
+            elif choice == 2:
+                clear_screen()
+                print_all_data()
+            elif choice == 3:
+                clear_screen()
+                plot_data()
+            elif choice == 4:
+                clear_screen()
+                check_time()
+            else:
+                print('\n\t\t\tZŁY WYBÓR!')
+                time.sleep(2)
+                main_menu()
+        except ValueError:
+            print('\n\t\t\tZŁY WYBÓR!')
+            time.sleep(2)
+            main_menu()
+
+
+
 
 
 
@@ -159,26 +139,15 @@ def plot_data():
 ########################################################################################################################
 # GŁÓWNY PROGRAM:
 
-clear_screen()                                                              # wyczyść ekran
+data_dict = {}
 
-read_data_from_file()                                                       # wczytaj plij json z danymi
 
-print_data()
-
-print()
-
-check_time()
-
-print()
+read_data_from_file()                     # wczytaj plij json z danymi
 
 chrome_list = data_dict['Chrome']
 notepad_list = data_dict['Notepad']
 todo_list = data_dict['ToDo']
 
-# print(chrome_list)
-print()
-# print(notepad_list)
-print()
-# print(todo_list)
-print()
-plot_data()
+convert_string_to_datetime()
+
+main_menu()                               # Wyświetl menu główne programu
