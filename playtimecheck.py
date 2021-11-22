@@ -3,13 +3,11 @@ import datetime
 import time
 import os
 import json
-# from typing import List
 import win32gui # BIBLIOTEKA DO UKRYWANIA APLIKACJI
 import win32.lib.win32con as win32con # BIBLIOTEKA DO UKRYWANIA APLIKACJI
 
 
 
-# funkcja sprawdzająca czy dany proces jest uruchomiony
 def process_exists(process_name):
     call = 'TASKLIST', '/FI', 'imagename eq %s' % process_name
     # use buildin check_output right away
@@ -20,17 +18,20 @@ def process_exists(process_name):
     return last_line.lower().startswith(process_name.lower())
 
 
-# funkcja czyszczenia ekranu
 def clear_screen():
     os.system('cls')
 
-# funkcja zapisująca odczytane dane do pliku .json
+
 def save_data_to_file():
     dict_file = 'd:\\users\\sebas\\onedrive\\repositories\\playtimecheck\data.json'
     with open(dict_file, 'w') as file:
         json.dump(data_dict, file, indent=4)
-        # json.dump(notepad_activity, file, indent=4)
-        # json.dump(ToDo_activity, file, indent=4)
+
+
+def hide_app():
+    the_program_to_hide = win32gui.GetForegroundWindow()
+    win32gui.ShowWindow(the_program_to_hide , win32con.SW_HIDE)
+
 
 clear_screen()
 
@@ -38,22 +39,17 @@ chrome_activity = [] # stworzenie pustj listy do zapisania danych w formacie ['c
 notepad_activity = []
 ToDo_activity = []
 
-# funkcja ukrywająca aplikację - działanie w tle
-def hide_app():
-    the_program_to_hide = win32gui.GetForegroundWindow()
-    win32gui.ShowWindow(the_program_to_hide , win32con.SW_HIDE)
 
-
-# Główna pętla programu
+# MAIN LOOP
 while True:
 
-    now = datetime.datetime.now() # odczyt aktualnej daty i czasu
+    now = datetime.datetime.now() # get actual data & time
 
-    if process_exists('chrome.exe') == True: # jeśli proces jest uruchomiony to:
+    if process_exists('chrome.exe') == True: 
         chrome_activity.append([f'{now:%Y-%m-%d %H:%M:%S}', True])
         print(f'{now:%Y-%m-%d %H:%M:%S}: Chrome działa')
 
-    if process_exists('chrome.exe') == False: # jeśli proces nie jest uruchomiony to:
+    if process_exists('chrome.exe') == False: 
         chrome_activity.append([f'{now:%Y-%m-%d %H:%M:%S}', False])
         print(f'{now:%Y-%m-%d %H:%M:%S}: Chrome nie działa')
 
@@ -75,5 +71,5 @@ while True:
     
     data_dict = {'Chrome': chrome_activity, 'Notepad': notepad_activity, 'ToDo': ToDo_activity}
 
-    save_data_to_file() # zapisz dane do pliku
-    time.sleep(120) # odstęp czasowy w sekundach pomiędzy kolejnymi odczytami
+    save_data_to_file() 
+    time.sleep(120) 

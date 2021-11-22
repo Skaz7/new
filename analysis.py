@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 # import pandas as pd
 
 
-# Funcja wczytująca dane z pliku
 def read_data_from_file():
 
     file_name = 'd:\\users\\sebas\\onedrive\\repositories\\playtimecheck\\data.json'
@@ -15,12 +14,10 @@ def read_data_from_file():
         data_dict = json.load(file)
 
 
-# funkcja czyszcząca ekran
 def clear_screen():
     os.system('cls')
 
 
-# Funcja konwertująca forma string do datetime
 def convert_string_to_datetime():
 
     for program, state in data_dict.items():
@@ -28,7 +25,65 @@ def convert_string_to_datetime():
             state[i][0] = datetime.strptime(state[i][0], '%Y-%m-%d %H:%M:%S')
 
 
-# funcja drukująca czas rozpoczęcia, zakończenia i trwania pomiaru
+def chrome_analysis():
+
+    clear_screen()
+    print('\nDziałanie programu Chrome w czasie:\n')
+   
+    for i in range(0, len(chrome_list)):
+        print(chrome_list[i][0], ' - ', chrome_list[i][1])
+
+    input('\nEnter - Powrót')
+
+
+def notepad_analysis():
+
+    clear_screen()
+    print('\nDziałanie programu Notepad w czasie:\n')
+
+    for i in range(0, len(notepad_list)):
+        print(notepad_list[i][0], ' - ', notepad_list[i][1])
+
+    input('\nEnter - Powrót')
+
+
+def todo_analysis():
+
+    clear_screen()
+    print('\nDziałanie programu ToDo w czasie:\n')
+
+    for i in range(0, len(todo_list)):
+        print(todo_list[i][0], ' - ', todo_list[i][1])
+
+    input('\nEnter - Powrót')
+
+
+def single_program_analysis():
+
+    while True:
+        clear_screen()
+        print('\nAnaliza działa pojedynczego programu')
+        print('\nWybierz program do analizy:')
+        print('\n\t1 - Chrome')
+        print('\t2 - Notepad')
+        print('\t3 - ToDo')
+        print('\n\t0 - Powrót')
+
+        choice = input('\nTwój wybór: ')
+
+        if choice == '0':
+            return
+        elif choice == '1':
+            chrome_analysis()
+        elif choice == '2':
+            notepad_analysis()
+        elif choice == '3':
+            todo_analysis()
+        else:
+            print('\n\t\t\t\tZŁY WYBÓR!')
+            continue
+
+
 def check_time():
 
     first = data_dict['Chrome'][0][0]
@@ -50,7 +105,6 @@ def check_time():
     main_menu()
 
 
-# funkcja drukująca zestawienie wszystkich programów i ich stanów w czasie
 def print_all_data():
 
     clear_screen()
@@ -64,7 +118,6 @@ def print_all_data():
     main_menu()
 
 
-# funcja drukująca wykres
 def plot_data():
 
     for i in range(len(chrome_list)):
@@ -90,7 +143,6 @@ def plot_data():
     plt.show()
 
 
-# Menu główne programu
 def main_menu():
 
     while True:
@@ -108,9 +160,11 @@ def main_menu():
 
             if choice == 0:
                 clear_screen()
+                print('\n\n\n\t\t\t\tDO ZOBACZENIA...\n\n\n')
+                time.sleep(1)
                 quit()
             elif choice == 1:
-                pass
+                single_program_analysis()
             elif choice == 2:
                 clear_screen()
                 print_all_data()
@@ -137,12 +191,11 @@ def main_menu():
 
 
 ########################################################################################################################
-# GŁÓWNY PROGRAM:
 
 data_dict = {}
 
 
-read_data_from_file()                     # wczytaj plij json z danymi
+read_data_from_file()                     
 
 chrome_list = data_dict['Chrome']
 notepad_list = data_dict['Notepad']
@@ -150,4 +203,4 @@ todo_list = data_dict['ToDo']
 
 convert_string_to_datetime()
 
-main_menu()                               # Wyświetl menu główne programu
+main_menu()                        
